@@ -1,28 +1,39 @@
+import React from "react";
+
 import Container from "react-bootstrap/Container";
+
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+
 import { Link, Route, Switch } from "react-router-dom";
-import HomePage from "./HomePage";
 import BookPage from "./BookPage";
+import HomePage from "./HomePage";
+import LocalPage from "./LocalPage";
 
 const RouterPage = () => {
   return (
     <>
-      <Navbar bg="light" expand="lg" className="mb-5">
-        <Container>
-          <Link to="/books">LOGO</Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
+      <Navbar bg="light" expand="lg">
+        <Container fluid>
+          <Link to="/book">LOGO</Link>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: "100%" }}
+              navbarScroll
+            >
               <Link to="/">Home</Link>
-              <Link to="/books">도서검색</Link>
+              <Link to="/book">도서검색</Link>
+              <Link to="/local">지역검색</Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <Switch>
         <Route path="/" component={HomePage} exact={true} />
-        <Route path="/books" component={BookPage} />
+        <Route path="/book" component={BookPage} />
+        <Route path="/local" component={LocalPage} />
       </Switch>
     </>
   );

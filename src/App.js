@@ -1,14 +1,14 @@
 import "./App.css";
-import { Button } from "react-bootstrap";
-import RouterPage from "./Components/RouterPage";
-import any from "./images/any.jpeg";
+import RouterPage from "./components/RouterPage";
+import home from "./images/home.jpg";
+import { Container } from "react-bootstrap";
 
 function App() {
   return (
-    <div className="App">
-      <img src={any} width="100%" />
+    <Container className="App">
+      <img src={home} width="100%" alt="" />
       <RouterPage />
-    </div>
+    </Container>
   );
 }
 

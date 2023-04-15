@@ -1,6 +1,7 @@
 {
-  "name": "learn-react",
+  "name": "ex07",
   "version": "0.1.0",
+  "author": "고진호",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
@@ -8,9 +9,8 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^1.3.5",
     "bootstrap": "^5.2.3",
-    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.2",
+    "react-bootstrap": "^2.7.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "5.3.0",
     "react-scripts": "5.0.1",
@@ -20,9 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "homepage": "https://ghbrylee.github.io/learn-react/"
+  }
 }

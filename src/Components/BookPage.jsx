@@ -1,36 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col, Button, Form, Card } from "react-bootstrap";
 import axios from "axios";
+import Book from "./Book";
 
 const BookPage = () => {
+  const ref_query = useRef(null);
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
-  const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [is_end, setIs_end] = useState(false);
   const [query, setQuery] = useState("리액트");
-  const ref_query = useRef(null);
-
-  const onSummit = (e) => {
-    e.preventDefault();
-    getBooks();
-  };
 
   const getBooks = async () => {
     const url = "https://dapi.kakao.com/v3/search/book?target=title";
     const config = {
-      headers: { Authorization: "KakaoAK 62d1651fe45fa7781380543145cdd1c6" },
-      params: { query: query, size: 6, page: page },
+      headers: { Authorization: "KakaoAK 05bf6a4174ba99f6a464661436e060f7" },
+      params: { query: query, size: 8, page: page },
     };
 
     setLoading(true);
-    const result = await axios(url, config);
-
+    const result = await axios.get(url, config);
+    setLoading(false);
+    setBooks(result.data.documents);
     setTotal(result.data.meta.pageable_count);
     setIs_end(result.data.meta.is_end);
-    setBooks(result.data.documents);
-    console.log(result);
     setLoading(false);
+    console.log(result);
+
     ref_query.current.focus();
   };
 
@@ -38,54 +35,72 @@ const BookPage = () => {
     getBooks();
   }, [page]);
 
-  if (loading) return <h1 className="text-center my-5">로딩중임 ...</h1>;
+  if (loading) return <h1 className="text-center my-5">로딩중....</h1>;
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setPage(1);
+    getBooks();
+  };
+
   return (
-    <Row className="my-5 mx-2">
+    <Row className="my-5 mx=2">
       <Row>
-        <Col>
-          <Form onSubmit={onSummit}>
+        <Col className="mb-2" md={3}>
+          <Form onSubmit={onSubmit}>
             <Form.Control
-              onChange={(e) => setQuery(e.target.value)}
-              value={query}
-              placeholder="검색어"
               ref={ref_query}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="검색어"
             />
           </Form>
         </Col>
-        <Col>검색수 : {total}</Col>
+        {/* <Col>검색 수 : {total}건</Col> */}
       </Row>
+      <hr />
       <Col>
         <h1 className="text-center">도서검색</h1>
+
         <Row>
           {books.map((book) => (
-            <Col key={book.isbn} className="box my-2">
-              <div>
-                <img
-                  src={
-                    !book.thumbnail
-                      ? "http://via.placeholder.com/120x170"
-                      : book.thumbnail
-                  }
-                />
-              </div>
-              <div className="eilipsis">{book.title}</div>
-              <div className="eilipsis">{book.price}원</div>
+            <Col className="my-2" md={3} xs={6} key={book.isbn}>
+              <Card>
+                <Card.Body>
+                  <img
+                    src={
+                      book.thumbnail
+                        ? book.thumbnail
+                        : "https://via.placeholder.com/120x170/"
+                    }
+                    alt=""
+                  />
+                  <div className="ellipsis">{book.title}</div>
+
+                  <Book book={book} />
+                </Card.Body>
+              </Card>
             </Col>
           ))}
+          <div className="text-center my-3">
+            <Button
+              disabled={page === 1 ? true : false}
+              onClick={() => setPage(page - 1)}
+              className="btn-sm"
+            >
+              이전
+            </Button>
+            <span className="px-3">{page}</span>
+            <Button
+              disabled={is_end && true}
+              onClick={() => setPage(page + 1)}
+              className="btn-sm"
+            >
+              다음
+            </Button>
+          </div>
         </Row>
       </Col>
-      <div>
-        <Button disabled={page == 1 && true} onClick={() => setPage(page - 1)}>
-          이전
-        </Button>
-        <span className="mx-3">{page}</span>
-        <Button
-          disabled={is_end == 1 && true}
-          onClick={() => setPage(page + 1)}
-        >
-          다음
-        </Button>
-      </div>
     </Row>
   );
 };
